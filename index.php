@@ -1,6 +1,6 @@
 <?php
 
-// mysql bazastan dakavshireba
+//  bazastan dakavshireba
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=products_crud', 'root' , '');
 // exception srola tu error moxda da ver daukavshirda mysql bazas
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -16,7 +16,7 @@ $statement->execute();
 // dabrunebuli statementida asociaciur masivshi unda davfetchtot monacemebi da shevinaxot variableshi
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-// lamazad dabechvda dabrunebuli asociaciuri masivis
+//  dabechvda dabrunebuli asociaciuri masivis
 // echo "<pre>";
 // var_dump($products);
 // echo "</pre>";
