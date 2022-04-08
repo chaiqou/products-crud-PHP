@@ -19,16 +19,49 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 // postidan informaciis amogeba
 
+
+$price = '';
+$title = '';
+$description = '';
+
+
+
+
+
 $price =$_POST['price'] ?? null;
 $title =$_POST['title'] ?? null;
 $description =$_POST['description'] ?? null;
 
+
+
+// validacia
+
+$errors = [];
+
+// Price tu ar arsebobs da is aris an undefined an null mashin errors arrayshi davamatot price is required
+if(!$price) {
+    $errors[] = 'Price is required';
+}
+
+if(!$title) {
+    $errors[] = 'Title is required';
+}
+
+
+
+
+// rodesac erorrebis maosivi iqneba carieli shesruldeba bazashi gagzavnis kodi
+// empty funqcia amowmebs carielia tu ara masivi , tu carielia abrunebs true , tu rame aris shignit false
+
+
+
+
+if(empty($errors)) {
+
+
 // bazashi informaciis shenaxva kerdzod produqtebis cxrilshi informaciis shenaxva
 
-// amit vamowmebt request methodi rom iyos post da ara get
-if($_SERVER['REQUEST_METHOD'] === "post"){
-
-    $statement = $pdo->prepare("INSERT INTO products (title,img,price,description,create_date)
+$statement = $pdo->prepare("INSERT INTO products (title,img,price,description,create_date)
 VALUES (:title, :img, :price, :description, :date)");
 
 // chven values gaadavecit named parametrebit romlebsac axla unda gavuwerot realuri mnishvnelobebi
@@ -42,7 +75,14 @@ $statement->bindValue(':date', date('Y-m-d H:i:s'));
 // amis shemdeg unda gamovidzaxot execute romelic am yvelafers gadaitans bazashi
 $statement->execute();
 
+// dadasturebis mere gadaiyvans mtavar gverdze
+header("Location: index.php");
+
 }
+
+//   echo "<pre>";
+//   var_dump($errors);
+//   echo "</pre>";
 
 
 
@@ -67,8 +107,21 @@ $statement->execute();
 </head>
 
 <body>
+    <h1>Create new product</h1>
 
-    <h1>Products CRUD!</h1>
+    <!-- Validacaia -->
+    <?php if(!empty($errors)): ?>
+    <div class="alert alert-danger">
+        <?php foreach ($errors as $key => $error) : ?>
+        <div> <?php echo $error; ?> </div>
+        <?php endforeach; ?>
+    </div>
+
+
+    <?php endif;  ?>
+
+
+
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Product Image</label>
@@ -76,18 +129,21 @@ $statement->execute();
         </div>
         <div class="mb-3">
             <label class="form-label">Product Title</label>
-            <input type="text" name='title' class="form-control">
+            <input type="text" name='title' class="form-control" value=<?php echo $title ?>>
         </div>
         <div class="mb-3">
             <label class="form-label">Product Description</label>
-            <textarea class="form-control" name='description' placeholder="Leave a comment here"></textarea>
+            <textarea class="form-control" name='description' placeholder="Leave a comment here"
+                value=<?php echo $description ?>></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Product Price</label>
-            <input type="number" name='price' class="form-control">
+            <input type="number" name='price' class="form-control" value=<?php echo $price ?>>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+
 
 
 
