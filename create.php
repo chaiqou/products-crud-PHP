@@ -6,24 +6,48 @@ $pdo = new PDO('mysql:host=localhost;port=3306;dbname=products_crud', 'root' , '
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 
-echo "<pre>";
-// super global romelic associative massiveshi inaxavs chvens dasabmitebul formis datas
-var_dump($_POST);
-echo "</pre>";
+// // super global romelic associative massiveshi inaxavs chvens dasabmitebul formis datas
+// echo "<pre>";
+// var_dump($_POST);
+// echo "</pre>";
+
+
+//  echo "<pre>";
+//  var_dump($_SERVER['REQUEST_METHOD']);
+//  echo "</pre>";
+
 
 // postidan informaciis amogeba
 
-$price =$_POST['price'];
-$title =$_POST['title'];
-$description =$_POST['description'];
+$price =$_POST['price'] ?? null;
+$title =$_POST['title'] ?? null;
+$description =$_POST['description'] ?? null;
 
 // bazashi informaciis shenaxva kerdzod produqtebis cxrilshi informaciis shenaxva
 
-$pdo->prepare("INSERT INTO products (title,image,price,description,create_date)
-VALUES ($title,'',$price,$description,)
-")
+// amit vamowmebt request methodi rom iyos post da ara get
+if($_SERVER['REQUEST_METHOD'] === "post"){
+
+    $statement = $pdo->prepare("INSERT INTO products (title,img,price,description,create_date)
+VALUES (:title, :img, :price, :description, :date)");
+
+// chven values gaadavecit named parametrebit romlebsac axla unda gavuwerot realuri mnishvnelobebi
+$statement->bindValue(':title', $title);
+$statement->bindValue(':img', '');
+$statement->bindValue(':price', $price);
+$statement->bindValue(':description', $description);
+$statement->bindValue(':date', date('Y-m-d H:i:s'));
+
+
+// amis shemdeg unda gamovidzaxot execute romelic am yvelafers gadaitans bazashi
+$statement->execute();
+
+}
+
+
 
 ?>
+
 
 
 <!doctype html>
