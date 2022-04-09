@@ -12,9 +12,23 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 // echo "</pre>";
 
 
-//  echo "<pre>";
-//  var_dump($_SERVER['REQUEST_METHOD']);
-//  echo "</pre>";
+// es funqcia abrunebs random strings yoveltvis imdeni asoti ramdensac parametrad gadavcemt mas
+
+function randomText($n) {
+    $characters = '0123456789abcdefgiklmnopjrstufq';
+    $string = '';
+    for ($i=0; $i < $n; $i++) { 
+        $index = rand(0,strlen($characters) -1);
+        $string .= $characters[$index];
+        
+    };
+  return $string;
+};
+
+
+echo randomText(9);
+
+
 
 
 // postidan informaciis amogeba
@@ -31,6 +45,20 @@ $description = '';
 $price =$_POST['price'] ?? null;
 $title =$_POST['title'] ?? null;
 $description =$_POST['description'] ?? null;
+$image = $_FILES['image'] ?? null;
+
+
+$imagePath = '';
+
+if(!is_dir('images')) {
+    mkdir('images');
+};
+
+if($image) {
+    // shevqmeni image paith romelic iqneba yoveltvis ertmanetisgan gansxvavebuli da gadaveci movke to uploads
+    $imagePath = '/images'.randomText(9).'/'.$image['name'];
+    mkdir(dirname($imagePath));
+    move_uploaded_file($image['tmp-name'],$imagePath); }
 
 
 
@@ -66,7 +94,7 @@ VALUES (:title, :img, :price, :description, :date)");
 
 // chven values gaadavecit named parametrebit romlebsac axla unda gavuwerot realuri mnishvnelobebi
 $statement->bindValue(':title', $title);
-$statement->bindValue(':img', '');
+$statement->bindValue(':img', $imagePath);
 $statement->bindValue(':price', $price);
 $statement->bindValue(':description', $description);
 $statement->bindValue(':date', date('Y-m-d H:i:s'));
@@ -116,13 +144,11 @@ header("Location: index.php");
         <div> <?php echo $error; ?> </div>
         <?php endforeach; ?>
     </div>
-
-
     <?php endif;  ?>
 
 
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">Product Image</label>
             <input type="file" name='image' class="form-control">
