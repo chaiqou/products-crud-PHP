@@ -9,7 +9,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 // ყველაფრის მონიშვნა შესაბამის მონაცემთა ბაზაში
 
-$statement = $pdo->prepare('SELECT * FROM products');
+$statement = $pdo->prepare('SELECT * FROM products ORDER BY created_date DESC'); // order by created_date alagebs axal produktebs tavshi shegmnis drois mixedvit
 
 // monishvnis shemdeg aucileblad unda gavuketot execute dabrunebul statements
 $statement->execute();
@@ -67,7 +67,17 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
             <tr>
                 <th scope="row"><?php echo $product['id'] ?></th>
-                <td><?php echo 'image' ?></td>
+
+                <!-- tu productebshi arsebobs image mashin gaakete shuashi moqceuli kodi -->
+                <td><?php if($product['img']): ?>
+
+                    <img src="<?php echo $product['img']  ?>" alt="<?php echo $product['title'] ?>"
+                        class='product-image' />
+
+                    <?php endif; ?>
+
+
+                </td>
                 <td><?php echo $product['title'] ?></td>
                 <td><?php echo $product['price'] ?></td>
                 <td><?php echo 'actions' ?></td>

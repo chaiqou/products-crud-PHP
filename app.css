@@ -2,3 +2,7 @@ body {
   padding: 50px;
   margin: 50px;
 }
+
+.product-image {
+  width: 50px;
+}
