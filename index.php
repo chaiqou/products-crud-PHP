@@ -9,7 +9,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 // ყველაფრის მონიშვნა შესაბამის მონაცემთა ბაზაში
 
-$statement = $pdo->prepare('SELECT * FROM products ORDER BY created_date DESC'); // order by created_date alagebs axal produktebs tavshi shegmnis drois mixedvit
+$statement = $pdo->prepare('SELECT * FROM products ORDER BY create_date DESC'); // order by created_date alagebs axal produktebs tavshi shegmnis drois mixedvit
 
 // monishvnis shemdeg aucileblad unda gavuketot execute dabrunebul statements
 $statement->execute();
@@ -84,7 +84,10 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo $product['create_date'] ?></td>
                 <td>
                     <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
-                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                    <form method="post" action="delete.php" style="display: inline-block">
+                        <input type="hidden" name="id" value="<?php echo $product['id'] ?>" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
 
